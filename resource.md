@@ -23,3 +23,5 @@
 - https://www.notion.so/Mutex-Semaphore-8d304ed6856a48ceb298b51250cc52cc
 
 - https://www.notion.so/Philosophers-258f43babb5144bb8750534f3e8c1fce
+
+- [사용되는 함수 정리해놓은 ](https://ceuity.tistory.com/24)
