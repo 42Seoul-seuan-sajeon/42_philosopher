@@ -166,26 +166,34 @@ void *philosopher(void *arg)
 
     // 짝수 thread에 대해 usleep을 지정함으로써 홀수 thread가 우선적으로 실행되게 함.
     if (philo->id % 2 == 0)
-        usleep(philo->info->time_eat);
+        usleep(1000 * philo->info->time_eat);
 
     // thread가 실행되는 가상의 시간 설정
     while (!philo->info->dead)
     {
-        pthread_mutex_lock(&philo->info->fork[philo->fork_l]);
-        print_status(philo, FORK);
         pthread_mutex_lock(&philo->info->fork[philo->fork_r]);
         print_status(philo, FORK);
+        pthread_mutex_lock(&philo->info->fork[philo->fork_l]);
+        print_status(philo, FORK);
+        pthread_mutex_lock(&philo->philo_lock);
         print_status(philo, EAT);
+        pthread_mutex_unlock(&philo->philo_lock);
         while (current_time() - philo->stt <= philo->info->time_eat && !philo->info->dead)
             usleep(1000);
         philo->stt = current_time();
-        pthread_mutex_unlock(&philo->info->fork[philo->fork_l]);
         pthread_mutex_unlock(&philo->info->fork[philo->fork_r]);
+        pthread_mutex_unlock(&philo->info->fork[philo->fork_l]);
+        if (philo->info->dead)
+            break;
         sleep_time = current_time();
         print_status(philo, SLEEP);
         while(current_time() - sleep_time <= philo->info->time_sleep && !philo->info->dead)
             usleep(1000);
+        if (philo->info->dead)
+            break;
         print_status(philo, THINK);
+        if (philo->info->dead)
+            break;
     }
     return NULL;
 }
@@ -203,10 +211,12 @@ void    *monitor(void *arg)
         {
             philo->info->dead = 1;
             print_status(philo, DIE);
+            pthread_mutex_unlock(&philo->philo_lock);
             break;
         }
     }
     pthread_mutex_unlock(&philo->philo_lock);
+    usleep(100);
     return NULL;
 }
 
@@ -236,7 +246,7 @@ int main(int argc, char **argv)
             return (printf("Failed create thread\n"));
         if (pthread_create(&(info.philo[i].monitor), NULL, &monitor, &info.philo[i]))
             return (printf("Failed create thread\n"));
-        usleep(100);
+        // usleep(100);
         i++;
     } 
     // pthread_join
