@@ -176,6 +176,7 @@ void *philosopher(void *arg)
         print_status(philo, FORK);
         print_status(philo, EAT);
         usleep(1000 * philo->info->time_eat);
+        philo->stt = current_time();
         pthread_mutex_unlock(&philo->info->fork[philo->fork_l]);
         pthread_mutex_unlock(&philo->info->fork[philo->fork_r]);
         print_status(philo, SLEEP);
@@ -194,7 +195,7 @@ void    *monitor(void *arg)
     pthread_mutex_lock(&philo->philo_lock);
     while (!philo->info->dead)
     {
-        if (current_time() - philo->stt >= philo->info->time_eat)
+        if (current_time() - philo->stt >= philo->info->time_die)
         {
             philo->info->dead = 1;
             print_status(philo, DIE);
