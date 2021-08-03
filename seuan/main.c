@@ -135,6 +135,11 @@ void    print_status(t_philo *philo, int status)
 {
     // Befort print, mutex lock thread
     pthread_mutex_lock(&philo->info->status);
+    if (philo->info->dead)
+    {
+        pthread_mutex_unlock(&philo->info->status);
+        return;
+    }
 
     // timestamp in ms
     printf("[%dms] ", current_time() - philo->info->init_time);
@@ -183,17 +188,11 @@ void *philosopher(void *arg)
         philo->stt = current_time();
         pthread_mutex_unlock(&philo->info->fork[philo->fork_r]);
         pthread_mutex_unlock(&philo->info->fork[philo->fork_l]);
-        if (philo->info->dead)
-            break;
         sleep_time = current_time();
         print_status(philo, SLEEP);
         while(current_time() - sleep_time <= philo->info->time_sleep && !philo->info->dead)
             usleep(1000);
-        if (philo->info->dead)
-            break;
         print_status(philo, THINK);
-        if (philo->info->dead)
-            break;
     }
     return NULL;
 }
