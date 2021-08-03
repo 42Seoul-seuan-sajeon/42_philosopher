@@ -203,10 +203,9 @@ void    *monitor(void *arg)
     t_philo *philo;
 
     philo = arg;
-    // philo lock은 왜 하는 지 모르겠음...
-    pthread_mutex_lock(&philo->philo_lock);
     while (!philo->info->dead)
     {
+        pthread_mutex_lock(&philo->philo_lock);
         if (current_time() - philo->stt >= philo->info->time_die)
         {
             philo->info->dead = 1;
@@ -214,9 +213,9 @@ void    *monitor(void *arg)
             pthread_mutex_unlock(&philo->philo_lock);
             break;
         }
+        pthread_mutex_unlock(&philo->philo_lock);
+        usleep(100);
     }
-    pthread_mutex_unlock(&philo->philo_lock);
-    usleep(100);
     return NULL;
 }
 
