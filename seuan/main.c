@@ -158,6 +158,7 @@ void    print_status(t_philo *philo, int status)
 
 void *philosopher(void *arg)
 {
+    int sleep_time;
     t_philo *philo;
 
     // thread 생성 시 넘어오는 매개변수 받기
@@ -175,12 +176,15 @@ void *philosopher(void *arg)
         pthread_mutex_lock(&philo->info->fork[philo->fork_r]);
         print_status(philo, FORK);
         print_status(philo, EAT);
-        usleep(1000 * philo->info->time_eat);
+        while (current_time() - philo->stt <= philo->info->time_eat && !philo->info->dead)
+            usleep(1000);
         philo->stt = current_time();
         pthread_mutex_unlock(&philo->info->fork[philo->fork_l]);
         pthread_mutex_unlock(&philo->info->fork[philo->fork_r]);
+        sleep_time = current_time();
         print_status(philo, SLEEP);
-        usleep(1000 * philo->info->time_sleep);
+        while(current_time() - sleep_time <= philo->info->time_sleep && !philo->info->dead)
+            usleep(1000);
         print_status(philo, THINK);
     }
     return NULL;
