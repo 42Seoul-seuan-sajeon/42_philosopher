@@ -176,22 +176,27 @@ void *philosopher(void *arg)
     // thread가 실행되는 가상의 시간 설정
     while (!philo->info->dead)
     {
+        // eating
         pthread_mutex_lock(&philo->info->fork[philo->fork_r]);
         print_status(philo, FORK);
         pthread_mutex_lock(&philo->info->fork[philo->fork_l]);
         print_status(philo, FORK);
         pthread_mutex_lock(&philo->philo_lock);
         print_status(philo, EAT);
-        pthread_mutex_unlock(&philo->philo_lock);
-        while (current_time() - philo->stt <= philo->info->time_eat && !philo->info->dead)
-            usleep(1000);
         philo->stt = current_time();
+        while (current_time() - philo->stt <= philo->info->time_eat && !philo->info->dead)
+            usleep(3000);
+        pthread_mutex_unlock(&philo->philo_lock);
         pthread_mutex_unlock(&philo->info->fork[philo->fork_r]);
         pthread_mutex_unlock(&philo->info->fork[philo->fork_l]);
+
+        // sleeping
         sleep_time = current_time();
         print_status(philo, SLEEP);
         while(current_time() - sleep_time <= philo->info->time_sleep && !philo->info->dead)
             usleep(1000);
+
+        // thinking
         print_status(philo, THINK);
     }
     return NULL;
@@ -207,8 +212,8 @@ void    *monitor(void *arg)
         pthread_mutex_lock(&philo->philo_lock);
         if (current_time() - philo->stt >= philo->info->time_die)
         {
-            philo->info->dead = 1;
             print_status(philo, DIE);
+            philo->info->dead = 1;
             pthread_mutex_unlock(&philo->philo_lock);
             break;
         }
@@ -244,7 +249,7 @@ int main(int argc, char **argv)
             return (printf("Failed create thread\n"));
         if (pthread_create(&(info.philo[i].monitor), NULL, &monitor, &info.philo[i]))
             return (printf("Failed create thread\n"));
-        // usleep(100);
+        usleep(100);
         i++;
     } 
     // pthread_join
