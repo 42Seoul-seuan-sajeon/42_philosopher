@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:11:28 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/06 02:01:13 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/14 19:13:37 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void    set_info(t_info *info, char **argv)
 {
-    init_info(&info, argv);
-    init_fork(&info);
-    init_philo(&info);
+    init_info(info, argv);
+    init_fork(info);
+    init_philo(info);
 }
 
 int main(int argc, char **argv)
@@ -26,6 +26,7 @@ int main(int argc, char **argv)
 
     if (!(argc == 5 || argc == 6))
         return (0);
+    set_info(&info, argv);
     info.init_time = current_time();
     i = -1;
     while (++i < info.num_philo)
