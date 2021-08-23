@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:11:17 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/06 00:52:37 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/19 22:36:53 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ struct s_philo
     int th_time;
     int left_fork;
     int right_fork;
+    int cnt_eat;
     t_info *info;
     pthread_t thread;
     pthread_t monitor;
