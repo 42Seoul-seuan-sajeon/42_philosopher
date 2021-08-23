@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:11:28 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/24 04:15:52 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/24 04:25:04 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	set_info(t_info *info, char **argv)
 	init_philo(info);
 }
 
+// printf -> str_err로 수정하자.
 int	create_join_thread(t_info info)
 {
 	int	i;
