@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:27:30 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/24 02:42:33 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/24 03:55:24 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int	ft_atoi(const char *str)
 		result += (*str - '0');
 		str++;
 	}
-	return ((int)(result * sign));
+	result = result * sign;
+	if (result > 2147483647 || result <= 0)
+		return (-1);
+	return ((int)(result));
 }
 
 int	current_time(void)
