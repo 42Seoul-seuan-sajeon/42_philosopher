@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:11:17 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/19 22:36:53 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/24 02:30:36 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ struct s_philo
     pthread_mutex_t philo_lock;
 };
 
-void	init_fork(t_info *info);
-void	init_philo(t_info *info);
-void	init_info(t_info *info, char **argv);
+int	    init_fork(t_info *info);
+int	    init_philo(t_info *info);
+int	    init_info(t_info *info, char **argv);
 void	print_th_status(t_philo *philo, int th_status);
 int		ft_strlen(char *str);
 int		ft_atoi(const char *str);
