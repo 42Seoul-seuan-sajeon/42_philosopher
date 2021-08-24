@@ -6,42 +6,42 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:44:40 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/24 03:04:19 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/25 02:04:02 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	philo_eat(t_philo *philo)
+void	eating(t_philo *philo)
 {
 	if (philo->info->num_philo == 1)
 	{
-		pthread_mutex_lock(&philo->info->fork[philo->right_fork]);
+		pthread_mutex_lock(&philo->info->fork[philo->right_fork_idx]);
 		print_th_status(philo, FORK);
 		while (!philo->info->th_is_dead)
 			usleep(1000);
-		pthread_mutex_unlock(&philo->info->fork[philo->right_fork]);
+		pthread_mutex_unlock(&philo->info->fork[philo->right_fork_idx]);
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->info->fork[philo->right_fork]);
+		pthread_mutex_lock(&philo->info->fork[philo->right_fork_idx]);
 		print_th_status(philo, FORK);
-		pthread_mutex_lock(&philo->info->fork[philo->left_fork]);
+		pthread_mutex_lock(&philo->info->fork[philo->left_fork_idx]);
 		print_th_status(philo, FORK);
-		pthread_mutex_lock(&philo->philo_lock);
+		pthread_mutex_lock(&philo->th_lock);
 		print_th_status(philo, EAT);
-		philo->th_time = current_time();
-		pthread_mutex_unlock(&philo->philo_lock);
-		while (current_time() - philo->th_time <= philo->info->time_eat && \
+		philo->th_wait_time = current_time();
+		pthread_mutex_unlock(&philo->th_lock);
+		while (current_time() - philo->th_wait_time <= philo->info->time_eat && \
 				!philo->info->th_is_dead)
 			usleep(1000);
-		pthread_mutex_unlock(&philo->info->fork[philo->right_fork]);
-		pthread_mutex_unlock(&philo->info->fork[philo->left_fork]);
+		pthread_mutex_unlock(&philo->info->fork[philo->right_fork_idx]);
+		pthread_mutex_unlock(&philo->info->fork[philo->left_fork_idx]);
 		philo->cnt_eat++;
 	}
 }
 
-void	philo_sleep(t_philo *philo)
+void	sleeping(t_philo *philo)
 {
 	int	sleep_time;
 
@@ -52,7 +52,7 @@ void	philo_sleep(t_philo *philo)
 		usleep(1000);
 }
 
-void	philo_think(t_philo *philo)
+void	thinking(t_philo *philo)
 {
 	print_th_status(philo, THINK);
 }
@@ -62,15 +62,14 @@ void	*philosopher(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	if (philo->id % 2 != 0)
+	if (philo->id % 2 == 0 && philo->info->num_philo != 1)
 		usleep(1000 * philo->info->time_eat);
-	while (!philo->info->th_is_dead)
+	while (!philo->info->th_is_dead && \
+			philo->cnt_eat != philo->info->must_eating)
 	{
-		if (philo->cnt_eat == philo->info->must_eating)
-			break ;
-		philo_eat(philo);
-		philo_sleep(philo);
-		philo_think(philo);
+		eating(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
 	return (NULL);
 }

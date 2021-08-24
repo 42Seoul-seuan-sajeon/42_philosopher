@@ -4,12 +4,14 @@ CC		= gcc $(CFLAGS)
 
 CFLAGS	= -Wall -Wextra -Werror
 
-SRCS = init.c \
+SRCS = create.c \
 		main.c \
 		print.c \
 		util.c \
 		philosopher.c \
 		monitor.c \
+		free.c \
+		error.c \
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,12 +6,13 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:11:17 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/24 03:20:08 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/25 01:59:02 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
+
 # include <stdio.h>
 # include <string.h>
 # include <pthread.h>
@@ -45,19 +46,19 @@ struct s_info
 struct s_philo
 {
 	int				id;
-	int				th_time;
-	int				left_fork;
-	int				right_fork;
+	int				th_wait_time;
+	int				left_fork_idx;
+	int				right_fork_idx;
 	int				cnt_eat;
 	t_info			*info;
 	pthread_t		thread;
 	pthread_t		monitor;
-	pthread_mutex_t	philo_lock;
+	pthread_mutex_t	th_lock;
 };
 
-int		init_fork(t_info *info);
-int		init_philo(t_info *info);
-int		init_info(t_info *info, char **argv);
+int		create_fork(t_info *info);
+int		create_philo(t_info *info);
+int		create_info(t_info *info, char **argv);
 int		ft_strlen(char *str);
 int		ft_atoi(const char *str);
 int		current_time(void);
