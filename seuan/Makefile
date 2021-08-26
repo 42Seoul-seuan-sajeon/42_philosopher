@@ -4,8 +4,8 @@ CC		= gcc $(CFLAGS)
 
 CFLAGS	= -Wall -Wextra -Werror
 
-SRCS = create.c \
-		main.c \
+SRCS = main.c \
+		create.c \
 		print.c \
 		util.c \
 		philosopher.c \

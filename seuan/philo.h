@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:11:17 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/25 01:59:02 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/26 16:14:57 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 # define SLEEP 3
 # define THINK 4
 # define DIE 5
+# define MALLOC_FAIL 11
+# define MUTEX_FAIL 12
+# define THREAD_CREATE_FAIL 13
+# define THREAD_JOIN_FAIL 14
 
 typedef struct s_info	t_info;
 typedef struct s_philo	t_philo;
@@ -62,8 +66,9 @@ int		create_info(t_info *info, char **argv);
 int		ft_strlen(char *str);
 int		ft_atoi(const char *str);
 int		current_time(void);
+int		print_error(t_info *info, char *msg, int type);
 void	print_th_status(t_philo *philo, int th_status);
 void	*monitor(void *arg);
 void	*philosopher(void *arg);
-
+void	free_all(t_info *info);
 #endif
