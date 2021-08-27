@@ -6,7 +6,7 @@
 /*   By: seuan <seuan@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/08/06 00:44:40 by seuan             #+#    #+#             */
-/*   Updated: 2021/08/25 02:04:02 by seuan            ###   ########.fr       */
+/*   Updated: 2021/08/27 16:48:17 by seuan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@ void	eating(t_philo *philo)
 	}
 	else
 	{
-		pthread_mutex_lock(&philo->info->fork[philo->right_fork_idx]);
-		print_th_status(philo, FORK);
 		pthread_mutex_lock(&philo->info->fork[philo->left_fork_idx]);
+		print_th_status(philo, FORK);
+		pthread_mutex_lock(&philo->info->fork[philo->right_fork_idx]);
 		print_th_status(philo, FORK);
 		pthread_mutex_lock(&philo->th_lock);
 		print_th_status(philo, EAT);
@@ -35,8 +35,8 @@ void	eating(t_philo *philo)
 		while (current_time() - philo->th_wait_time <= philo->info->time_eat && \
 				!philo->info->th_is_dead)
 			usleep(1000);
-		pthread_mutex_unlock(&philo->info->fork[philo->right_fork_idx]);
 		pthread_mutex_unlock(&philo->info->fork[philo->left_fork_idx]);
+		pthread_mutex_unlock(&philo->info->fork[philo->right_fork_idx]);
 		philo->cnt_eat++;
 	}
 }
